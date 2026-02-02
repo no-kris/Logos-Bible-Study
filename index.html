@@ -9,13 +9,35 @@
             content="A free online tool to gain more understaning of Bible verses using AI theological analysis."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <link href="css/style.css" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link href="css/styles.css" rel="stylesheet" />
     </head>
 
     <body>
-        <p>Hello, world!</p>
+        <header class="header">
+            <h1>LOGOS</h1>
+            <div class="tagline">Bible Study Companion</div>
+        </header>
 
-        <script src="js/script.js"></script>
+        <main class="main">
+            <section class="search-container">
+                <input
+                    type="text"
+                    id="verseInput"
+                    class="search-input"
+                    placeholder="Enter a verse (e.g. John 1:1)..."
+                    autocomplete="off"
+                />
+                <button id="searchBtn" class="submit-btn">Analyze</button>
+            </section>
+            <section id="resultsArea">
+                <!-- Dynamically generated with JavaScript -->
+            </section>
+        </main>
+
+        <script src="js/scripts.js"></script>
     </body>
 </html>
