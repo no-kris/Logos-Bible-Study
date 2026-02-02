@@ -1,0 +1,17 @@
+:root {
+    --bg-paper: #f9f7f2;
+    --bg-card: #ffffff;
+    --text-main: #2c2c2c;
+    --text-muted: #5f6368;
+    --accent-slate: #2f3e46;
+    --accent-teal: #354f52;
+    --accent-crimson: #8b0000;
+    --border-color: #e0ddd5;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --radius: 8px;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 3rem;
+    --font-serif: "Merriweather", Georgia, serif;
+    --font-sans: "Inter", -apple-system, sans-serif;
+}
