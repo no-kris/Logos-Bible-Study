@@ -1,6 +1,8 @@
 const verseInput = document.getElementById("verseInput");
 const searchBtn = document.getElementById("searchBtn");
 const resultsArea = document.getElementById("resultsArea");
+const loader = document.getElementById("loader");
+const loaderText = document.getElementById("loaderText");
 
 // fetchWithRetry: A wrapper around fetch to retry requests on failure.
 //                 Retries 3 times with a 1-second delay by default.
@@ -86,11 +88,12 @@ const generateTheology = async (reference, text) => {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error?.message || "AI Analysis failed.");
+    console.log(error);
+    throw new Error("AI Analysis failed. Try again.");
   }
 
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   let content = data.choices[0].message.content.trim();
 
   // Removes wrapping markdown code blocks like ```json ... ```
@@ -102,7 +105,7 @@ const generateTheology = async (reference, text) => {
     return JSON.parse(content);
   } catch (error) {
     console.error("Analysis Failed:", error);
-    throw new Error(error.message || "Failed to parse AI response.");
+    throw new Error("Failed to parse AI response. Try again.");
   }
 };
 
@@ -132,6 +135,8 @@ const getCrossReferences = (analysis) => {
 //                area section. Using the data provided by the
 //                bible-api.com API and the AI model analysis.
 const renderResults = (reference, text, analysis) => {
+  loader.style.display = "none";
+
   let crossRefHtml = getCrossReferences(analysis);
 
   let html = `
@@ -174,16 +179,20 @@ const performAnalysis = async () => {
   searchBtn.disabled = true;
   resultsArea.innerHTML = "";
   resultsArea.classList.remove("visible");
+  loader.style.display = "block";
 
   try {
     const bibleData = await fetchVerseData(verseQuery);
+    loaderText.innerText = "Generating Analysis, Please Wait...";
     const theologyData = await generateTheology(
       bibleData.reference,
       bibleData.text,
     );
     renderResults(bibleData.reference, bibleData.text, theologyData);
   } catch (error) {
-    resultsArea.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+    console.log(error);
+    loader.style.display = "none";
+    resultsArea.innerHTML = `<div class="error-message">Error: Failed to generate analysis. Try again.</div>`;
     resultsArea.classList.add("visible");
   } finally {
     searchBtn.disabled = false;
