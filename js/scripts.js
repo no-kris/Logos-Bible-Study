@@ -48,26 +48,7 @@ const generateTheology = async (reference, text) => {
     throw new Error("API key missing. Check js/config.js.");
   }
 
-  const prompt = `
-    ROLE: You are an expert theological scholar specializing in historical-critical analysis, ancient languages, and biblical theology.
-
-    TASK: Analyze the bible verse provided below.
-
-    OUTPUT FORMAT: Return a raw JSON object with exactly these three keys:
-    1. "historicalContext": A brief paragraph on cultural/historical background.
-    2. "linguisticLens": Analysis of key original words.
-    3. "crossReferences": Two relevant cross-references with a 1-sentence explanation each. In the form of [{verse: 'John 1:1', explanation: 'text explaining verse'}]
-
-    LINGUISTIC GUIDELINES (STRICT):
-      - FORMAT: "Transliteration (Hebrew/Greek Script)".
-      - EXAMPLE: "Elohim (אֱלֹהִים)" or "bara (ברא)".
-      - Do NOT include labels like "[Hebrew]" or "[Transliteration]" inside the JSON values.
-
-    IMPORTANT: Return ONLY the JSON. No markdown formatting.
-
-    VERSE TO ANALYZE:
-    ${reference}: "${text}"
-    `;
+  const prompt = getPrompt(reference, text);
 
   const response = await fetchWithRetry(
     "https://openrouter.ai/api/v1/chat/completions",
@@ -96,9 +77,12 @@ const generateTheology = async (reference, text) => {
   // console.log(data);
   let content = data.choices[0].message.content.trim();
 
-  // Removes wrapping markdown code blocks like ```json ... ```
-  if (content.startsWith("```")) {
-    content = content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, "");
+  // Extract JSON object by finding the first '{' and last '}'
+  const startIndex = content.indexOf("{");
+  const endIndex = content.lastIndexOf("}");
+
+  if (startIndex !== -1 && endIndex !== -1) {
+    content = content.substring(startIndex, endIndex + 1);
   }
 
   try {
