@@ -2,6 +2,27 @@ const verseInput = document.getElementById("verseInput");
 const searchBtn = document.getElementById("searchBtn");
 const resultsArea = document.getElementById("resultsArea");
 
+// fetchWithRetry: A wrapper around fetch to retry requests on failure.
+//                 Retries 3 times with a 1-second delay by default.
+const fetchWithRetry = async (url, options, retries = 3, delay = 1000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      // If the response is OK, or if it's a client error (4xx) that we shouldn't retry, return it.
+      if (response.ok || (response.status >= 400 && response.status < 500)) {
+        return response;
+      }
+      throw new Error(`Request failed with status ${response.status}`);
+    } catch (error) {
+      const isLastAttempt = i === retries - 1;
+      if (isLastAttempt) throw error;
+
+      console.warn(`Attempt ${i + 1} failed. Retrying in ${delay}ms...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+};
+
 // fetchVerseData: This function uses the free bible-api.com api to
 //                 fetch and return a JSON object containing the verse
 //                 reference and text. Uses the default World English
@@ -15,7 +36,104 @@ const fetchVerseData = async (verseQuery) => {
   return await response.json();
 };
 
-const renderResults = (reference, text) => {
+// generateTheology: Call the AI model using the OpenRouter API with
+//                   the prompt. Return a JSON object containing the
+//                   historical context, linguistic lens, and
+//                   two cross references for the bible verse.
+const generateTheology = async (reference, text) => {
+  // Check if API key exists
+  if (typeof CONFIG === "undefined" || !CONFIG.OPENROUTER_API_KEY) {
+    throw new Error("API key missing. Check js/config.js.");
+  }
+
+  const prompt = `
+    ROLE: You are an expert theological scholar specializing in historical-critical analysis, ancient languages, and biblical theology.
+
+    TASK: Analyze the bible verse provided below.
+
+    OUTPUT FORMAT: Return a raw JSON object with exactly these three keys:
+    1. "historicalContext": A brief paragraph on cultural/historical background.
+    2. "linguisticLens": Analysis of key original words.
+    3. "crossReferences": Two relevant cross-references with a 1-sentence explanation each. In the form of [{verse: 'John 1:1', explanation: 'text explaining verse'}]
+
+    LINGUISTIC GUIDELINES (STRICT):
+      - FORMAT: "Transliteration (Hebrew/Greek Script)".
+      - EXAMPLE: "Elohim (אֱלֹהִים)" or "bara (ברא)".
+      - Do NOT include labels like "[Hebrew]" or "[Transliteration]" inside the JSON values.
+
+    IMPORTANT: Return ONLY the JSON. No markdown formatting.
+
+    VERSE TO ANALYZE:
+    ${reference}: "${text}"
+    `;
+
+  const response = await fetchWithRetry(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${CONFIG.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": window.location.href,
+        "X-Title": "Logos Bible Study",
+      },
+      body: JSON.stringify({
+        model: CONFIG.OPENROUTER_MODEL,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error?.message || "AI Analysis failed.");
+  }
+
+  const data = await response.json();
+  console.log(data);
+  let content = data.choices[0].message.content.trim();
+
+  // Removes wrapping markdown code blocks like ```json ... ```
+  if (content.startsWith("```")) {
+    content = content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, "");
+  }
+
+  try {
+    return JSON.parse(content);
+  } catch (error) {
+    console.error("Analysis Failed:", error);
+    throw new Error(error.message || "Failed to parse AI response.");
+  }
+};
+
+// getCrossReferences: Handle cases where the cross references
+//                     returned by the AI model are in the form
+//                     of an array of objects.
+const getCrossReferences = (analysis) => {
+  let crossRefContent = "";
+
+  if (Array.isArray(analysis.crossReferences)) {
+    crossRefContent = analysis.crossReferences
+      .map((item) => {
+        const ref = item.reference || item.verse || item.ref;
+        const exp = item.explanation || item.description || item.text;
+        return `<p><strong>${ref}:</strong> ${exp}</p>`;
+      })
+      .join("");
+  } else {
+    // Fallback for strings
+    crossRefContent = `<p>${analysis.crossReferences || "No references found."}</p>`;
+  }
+
+  return crossRefContent;
+};
+
+// renderResults: Generate the HTML content of the results
+//                area section. Using the data provided by the
+//                bible-api.com API and the AI model analysis.
+const renderResults = (reference, text, analysis) => {
+  let crossRefHtml = getCrossReferences(analysis);
+
   let html = `
       <div class="verse-display">
           <p class="verse-text">"${text.trim()}"</p>
@@ -25,19 +143,19 @@ const renderResults = (reference, text) => {
           <div class="card-header">
               <h3>Historical Context</h3>
           </div>
-          <div class="card-content"><p>Example historical context</p></div>
+          <div class="card-content"><p>${analysis.historicalContext}</p></div>
       </article>
       <article class="analysis-card">
           <div class="card-header">
               <h3>Linguistic Lens</h3>
           </div>
-          <div class="card-content"><p>Example linguistic lens</p></div>
+          <div class="card-content"><p>${analysis.linguisticLens}</p></div>
       </article>
       <article class="analysis-card">
           <div class="card-header">
               <h3>Cross-References</h3>
           </div>
-          <div class="card-content"><p>Example cross-reference</p></div>
+          <div class="card-content"><p>${crossRefHtml}</p></div>
       </article>
   `;
 
@@ -59,7 +177,11 @@ const performAnalysis = async () => {
 
   try {
     const bibleData = await fetchVerseData(verseQuery);
-    renderResults(bibleData.reference, bibleData.text);
+    const theologyData = await generateTheology(
+      bibleData.reference,
+      bibleData.text,
+    );
+    renderResults(bibleData.reference, bibleData.text, theologyData);
   } catch (error) {
     resultsArea.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
     resultsArea.classList.add("visible");
