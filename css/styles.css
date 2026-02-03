@@ -69,6 +69,7 @@ body {
 .main {
     width: 100%;
     max-width: 800px;
+    flex: 1; /* Pushes footer down */
 }
 
 /* SEARCH INPUT SECTION */
@@ -197,6 +198,61 @@ body {
 
         strong {
             color: var(--accent-slate);
+        }
+    }
+}
+
+/* FOOTER */
+.footer {
+    width: 100%;
+    max-width: 700px;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+
+    a {
+        color: var(--accent-teal);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+
+        &:hover {
+            color: var(--accent-crimson);
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .search-input::placeholder {
+        font-size: 0.85rem;
+    }
+
+    .footer {
+        font-size: 0.6rem;
+    }
+
+    .header {
+        .description {
+            font-size: 0.75rem;
+        }
+    }
+
+    .verse-display {
+        .verse-text {
+            font-size: 1.2rem;
+        }
+    }
+
+    .analysis-card {
+        .card-content {
+            font-size: 0.85rem;
         }
     }
 }
