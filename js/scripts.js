@@ -104,12 +104,12 @@ const getCrossReferences = (analysis) => {
       .map((item) => {
         const ref = item.reference || item.verse || item.ref;
         const exp = item.explanation || item.description || item.text;
-        return `<p><strong>${ref}:</strong> ${exp}</p>`;
+        return `<p class="card-content-p"><strong>${ref}:</strong> ${exp}</p>`;
       })
       .join("");
   } else {
     // Fallback for strings
-    crossRefContent = `<p>${analysis.crossReferences || "No references found."}</p>`;
+    crossRefContent = `<p class="card-content-p">${analysis.crossReferences || "No references found."}</p>`;
   }
 
   return crossRefContent;
@@ -130,21 +130,21 @@ const renderResults = (reference, text, analysis) => {
       </div>
       <article class="analysis-card">
           <div class="card-header">
-              <h3>Historical Context</h3>
+              <h3 class="card-header-title">Historical Context</h3>
           </div>
-          <div class="card-content"><p>${analysis.historicalContext}</p></div>
+          <div class="card-content"><p class="card-content-p">${analysis.historicalContext}</p></div>
       </article>
       <article class="analysis-card">
           <div class="card-header">
-              <h3>Linguistic Lens</h3>
+              <h3 class="card-header-title">Linguistic Lens</h3>
           </div>
-          <div class="card-content"><p>${analysis.linguisticLens}</p></div>
+          <div class="card-content"><p class="card-content-p">${analysis.linguisticLens}</p></div>
       </article>
       <article class="analysis-card">
           <div class="card-header">
-              <h3>Cross-References</h3>
+              <h3 class="card-header-title">Cross-References</h3>
           </div>
-          <div class="card-content"><p>${crossRefHtml}</p></div>
+          <div class="card-content"><p class="card-content-p">${crossRefHtml}</p></div>
       </article>
   `;
 
