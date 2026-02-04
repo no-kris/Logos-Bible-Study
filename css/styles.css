@@ -265,7 +265,7 @@ strong {
     text-decoration: underline;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 950px) {
     .search-input::placeholder {
         font-size: 0.85rem;
     }
