@@ -11,7 +11,7 @@ function getPrompt(reference, text) {
 
     The JSON object must strictly follow this structure:
     {
-      "historicalContext": "A comprehensive and detailed paragraph (at least 5-6 sentences) exploring the cultural, historical, and situational background of the verse.",
+      "historicalContext": "A comprehensive and detailed paragraph (at least 4-5 sentences) exploring the cultural, historical, and situational background of the verse.",
       "linguisticLens": "A detailed analysis of multiple key original words (Hebrew/Greek). Explain their nuance, root meaning, and significance in this context. Include pronunciation.",
       "crossReferences": "Two relevant cross-references with a detailed explanation (2-3 sentences) for each." Using this format: [
         {
