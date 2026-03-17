@@ -1,111 +1,110 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Logos | Free Bible Study Companion</title>
-        <meta name="author" content="Kris Treska" />
-        <meta
-            name="description"
-            content="A free online AI-powered Bible study tool. Get instant theological analysis, historical context, and verse breakdowns with this intelligent Bible study companion app."
+  <head>
+    <meta charset="utf-8" />
+    <title>Logos | Free Bible Study Companion</title>
+    <meta name="author" content="Kris Treska" />
+    <meta
+      name="description"
+      content="A free online AI-powered Bible study tool. Get instant theological analysis, historical context, and verse breakdowns with this intelligent Bible study companion app."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://logos-bible-study.com/" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://logos-bible-study.com/" />
+    <meta property="og:title" content="Logos | Free Bible Study App" />
+    <meta
+      property="og:description"
+      content="Deepen your Bible study and understanding with AI. Instant theological analysis and historical context for any Bible verse."
+    />
+    <meta
+      property="og:image"
+      content="https://logos-bible-study.com/images/favicon.png"
+    />
+
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Logos Bible Study Companion",
+        "operatingSystem": "Web",
+        "applicationCategory": "EducationalApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "A free online tool for deep Bible study using AI for theological analysis and historical context of Bible verses.",
+        "author": {
+          "@type": "Person",
+          "name": "Kris Treska"
+        }
+      }
+    </script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+  </head>
+
+  <body>
+    <header class="header">
+      <h1 class="header-title">LOGOS</h1>
+      <div class="tagline">Bible Study Companion</div>
+      <p class="description">
+        Logos is a free Bible study tool leveraging the abilities of AI models
+        to help users gain deeper theological understanding and historical
+        context of Bible scripture.
+      </p>
+    </header>
+
+    <main class="main">
+      <section class="search-container">
+        <input
+          type="text"
+          id="verseInput"
+          class="search-input"
+          placeholder="Enter a verse (e.g. John 1:1)..."
+          autocomplete="off"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <button id="searchBtn" class="submit-btn">Analyze</button>
+      </section>
+      <section id="loader" class="loader">
+        <div class="loader-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <p id="loaderText" class="loader-text"></p>
+      </section>
+      <section id="resultsArea">
+        <!-- Dynamically generated with JavaScript -->
+      </section>
+    </main>
 
-        <!-- Canonical URL -->
-        <link rel="canonical" href="https://logos-bible-study.com/" />
+    <footer class="footer">
+      <div>© 2026 Logos Bible Study</div>
+      <div>
+        Logos is built to help you go deeper into your Bible study. Your support
+        is optional but greatly appreciated.
+        <a
+          href="https://buymeacoffee.com/kristreska"
+          target="_blank"
+          class="support-link"
+          >Support the developer</a
+        >
+      </div>
+    </footer>
 
-        <!-- Open Graph / Social Media -->
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://logos-bible-study.com/" />
-        <meta property="og:title" content="Logos | Free Bible Study App" />
-        <meta
-            property="og:description"
-            content="Deepen your Bible study and understanding with AI. Instant theological analysis and historical context for any Bible verse."
-        />
-        <meta
-            property="og:image"
-            content="https://logos-bible-study.com/images/favicon.png"
-        />
-
-        <!-- Structured Data (Schema.org) -->
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "Logos Bible Study Companion",
-                "operatingSystem": "Web",
-                "applicationCategory": "EducationalApplication",
-                "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "USD"
-                },
-                "description": "A free online tool for deep Bible study using AI for theological analysis and historical context of Bible verses.",
-                "author": {
-                    "@type": "Person",
-                    "name": "Kris Treska"
-                }
-            }
-        </script>
-
-        <link
-            href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
-            rel="stylesheet"
-        />
-        <link href="css/styles.css" rel="stylesheet" />
-        <link rel="icon" type="image/png" href="/images/favicon.png" />
-    </head>
-
-    <body>
-        <header class="header">
-            <h1 class="header-title">LOGOS</h1>
-            <div class="tagline">Bible Study Companion</div>
-            <p class="description">
-                Logos is a free Bible study tool leveraging the abilities of AI
-                models to help users gain deeper theological understanding and
-                historical context of Bible scripture.
-            </p>
-        </header>
-
-        <main class="main">
-            <section class="search-container">
-                <input
-                    type="text"
-                    id="verseInput"
-                    class="search-input"
-                    placeholder="Enter a verse (e.g. John 1:1)..."
-                    autocomplete="off"
-                />
-                <button id="searchBtn" class="submit-btn">Analyze</button>
-            </section>
-            <section id="loader" class="loader">
-                <div class="loader-dots">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <p id="loaderText" class="loader-text"></p>
-            </section>
-            <section id="resultsArea">
-                <!-- Dynamically generated with JavaScript -->
-            </section>
-        </main>
-
-        <footer class="footer">
-            <div>© 2026 Logos Bible Study</div>
-            <div>
-                Logos is built to help you go deeper into your Bible study. Your
-                support is optional but greatly appreciated.
-                <a
-                    href="https://buymeacoffee.com/kristreska"
-                    target="_blank"
-                    class="support-link"
-                    >Support the developer</a
-                >
-            </div>
-        </footer>
-
-        <script src="js/prompt.js"></script>
-        <script src="js/config.js"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+    <script src="js/prompt.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
 </html>

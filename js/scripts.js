@@ -43,27 +43,16 @@ const fetchVerseData = async (verseQuery) => {
 //                   historical context, linguistic lens, and
 //                   two cross references for the bible verse.
 const generateTheology = async (reference, text) => {
-  // Check if API key exists
-  if (typeof CONFIG === "undefined" || !CONFIG.OPENROUTER_API_KEY) {
-    throw new Error("API key missing. Check js/config.js.");
-  }
-
   const prompt = getPrompt(reference, text);
 
   const response = await fetchWithRetry(
-    "https://openrouter.ai/api/v1/chat/completions",
+    "/.netlify/functions/generateTheology",
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${CONFIG.OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": window.location.href,
-        "X-Title": "Logos Bible Study",
       },
-      body: JSON.stringify({
-        model: CONFIG.OPENROUTER_MODEL,
-        messages: [{ role: "user", content: prompt }],
-      }),
+      body: JSON.stringify({ prompt }),
     },
   );
 
