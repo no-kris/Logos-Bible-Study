@@ -69,7 +69,7 @@ def get_prompt(reference: str, text: str) -> str:
     """
 
 
-@app.post("/")
+@app.get("/")
 async def health_check():
     return {"status": "ok", "message": "Logos Bible Study API is awake!"}
 
