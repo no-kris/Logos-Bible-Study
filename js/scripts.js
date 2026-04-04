@@ -38,48 +38,24 @@ const fetchVerseData = async (verseQuery) => {
   return await response.json();
 };
 
-// generateTheology: Call the AI model using the OpenRouter API with
+// generateTheology: Call the AI model with
 //                   the prompt. Return a JSON object containing the
 //                   historical context, linguistic lens, and
 //                   two cross references for the bible verse.
 const generateTheology = async (reference, text) => {
-  const prompt = getPrompt(reference, text);
-
-  const response = await fetchWithRetry(
-    "/.netlify/functions/generateTheology",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt }),
+  const response = await fetchWithRetry("/generate_theology", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ reference, text }),
+  });
 
   if (!response.ok) {
-    const error = await response.json();
-    console.log(error);
     throw new Error("AI Analysis failed. Try again.");
   }
 
-  const data = await response.json();
-  // console.log(data);
-  let content = data.choices[0].message.content.trim();
-
-  // Extract JSON object by finding the first '{' and last '}'
-  const startIndex = content.indexOf("{");
-  const endIndex = content.lastIndexOf("}");
-
-  if (startIndex !== -1 && endIndex !== -1) {
-    content = content.substring(startIndex, endIndex + 1);
-  }
-
-  try {
-    return JSON.parse(content);
-  } catch (error) {
-    console.error("Analysis Failed:", error);
-    throw new Error("Failed to parse AI response. Try again.");
-  }
+  return await response.json();
 };
 
 // getCrossReferences: Handle cases where the cross references

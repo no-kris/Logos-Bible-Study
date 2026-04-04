@@ -1,2 +1,5 @@
-[build]
-  functions = "netlify/functions"
+[[redirects]]
+  from = "/generate-theology"
+  to = "https://krisycle-logos-bible-study-api.hf.space/generate-theology"
+  status = 200
+  force = true
