@@ -11,7 +11,11 @@ load_dotenv(override=True)
 
 app = FastAPI()
 
-origins = ["http://127.0.0.1:8080/", "https://logos-bible-study.com"]
+origins = [
+    "http://127.0.0.1:8080",
+    "https://logos-bible-study.com",
+    "https://www.logos-bible-study.com",
+]
 
 app.add_middleware(
     CORSMiddleware,
