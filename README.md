@@ -1,3 +1,12 @@
+---
+title: Logos Bible Study API
+emoji: 📖
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # Logos | Bible Study Companion
 
 A free online tool to gain more understanding of Bible verses using AI theological analysis.
