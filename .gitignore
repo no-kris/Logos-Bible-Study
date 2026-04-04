@@ -1,3 +1,5 @@
 # secret stuff
 .env
 js/config.js
+
+__pycache__
