@@ -1,8 +1,8 @@
-# Ora Bible Study | Technical Documentation
+# Verse Dig Bible Study | Technical Documentation
 
 ## Project Overview
 
-Ora Bible Study is a web-based companion application that leverages AI to provide deep theological analysis, historical context, and linguistic insights into Bible verses. 
+Verse Dig Bible Study is a web-based companion application that leverages AI to provide deep theological analysis, historical context, and linguistic insights into Bible verses. 
 
 The project is split into a static frontend (hosted on Netlify) and a robust, scalable Python backend (hosted on Hugging Face Spaces).
 
