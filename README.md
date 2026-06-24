@@ -1,5 +1,5 @@
 ---
-title: Logos Bible Study API
+title: Ora Bible Study API
 emoji: 📖
 colorFrom: blue
 colorTo: indigo
@@ -7,11 +7,11 @@ sdk: docker
 pinned: false
 ---
 
-# Logos | Bible Study Companion
+# Ora | Bible Study Companion
 
 A free online tool to gain more understanding of Bible verses using AI theological analysis.
 
-URL: [Logos Bible Study](https://www.logos-bible-study.com)
+URL: 
 
 ## Description
 

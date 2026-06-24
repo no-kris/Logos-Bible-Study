@@ -13,8 +13,7 @@ app = FastAPI()
 
 origins = [
     "http://127.0.0.1:8080",
-    "https://logos-bible-study.com",
-    "https://www.logos-bible-study.com",
+    "https://ora-bible-study.netlify.app",
 ]
 
 app.add_middleware(
@@ -75,7 +74,7 @@ def get_prompt(reference: str, text: str) -> str:
 
 @app.get("/")
 async def health_check():
-    return {"status": "ok", "message": "Logos Bible Study API is awake!"}
+    return {"status": "ok", "message": "Ora Bible Study API is awake!"}
 
 
 @app.post("/generate_theology")

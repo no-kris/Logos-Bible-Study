@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/generate_theology"
-  to = "https://krisycle-logos-bible-study-api.hf.space/generate_theology"
+  to = "https://krisycle-ora-bible-study-api.hf.space/generate_theology"
   status = 200
   force = true
